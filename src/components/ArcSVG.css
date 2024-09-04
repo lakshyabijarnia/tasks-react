@@ -1,0 +1,16 @@
+/* ArcSVG.css */
+
+svg {
+  stroke: black;
+  display: block;
+  background: #f0f0f0; /* Optional: Light background color for better visibility */
+}
+.point {
+  cursor: pointer;
+  /* font-size: 25vh; */
+}
+
+.text {
+  cursor: pointer;
+  /* font-size: 3vh; */
+}
