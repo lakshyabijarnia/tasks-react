@@ -23,6 +23,7 @@ const ArcSVG = () => {
     const pointA = { x: startX, y: startY };
     const pointB = { x: width / 2, y: startY - arcHeight };
     const pointC = { x: endX, y: endY };
+    // A radiusx radiusy rotation large-arc-flag sweep-flag x y
     const arcPath = `
       M ${startX},${startY}
       A ${radius},${radius} 0 0 1 ${endX},${endY}
@@ -49,37 +50,39 @@ const ArcSVG = () => {
   const animateTo = (fromPoint, toPoint) => {
     const pathLength = getPathLength();
     if (pathLength === 0) return;
-
-    // Ensure start and end points are within valid range
+  
     fromPoint = Math.max(0, Math.min(pathLength, fromPoint));
     toPoint = Math.max(0, Math.min(pathLength, toPoint));
-
+  
+    const distance = Math.abs(toPoint - fromPoint); // Calculate distance between from and to
+    const speed = 300; // Speed in pixels per second
+    const duration = (distance / speed) * 1000; // Duration in milliseconds based on distance
+  
     const startPointLength = fromPoint;
     const endPointLength = toPoint;
-
+  
     const startTime = performance.now();
-    const duration = 2000; // Duration of animation in milliseconds
-
+  
     const animate = (currentTime) => {
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
-
+  
       const length = startPointLength + (endPointLength - startPointLength) * progress;
       const point = pathRef.current.getPointAtLength(length);
-
+  
       if (blueDotRef.current) {
         blueDotRef.current.setAttribute('cx', point.x);
         blueDotRef.current.setAttribute('cy', point.y);
       }
-
+  
       if (progress < 1) {
         requestAnimationFrame(animate);
       }
     };
-
+  
     requestAnimationFrame(animate);
   };
-
+  
   const handlePointClick = (point) => {
     const pathLength = getPathLength();
     if (pathLength === 0) return;
